@@ -1,11 +1,12 @@
 """This module contains interactions with OpenAI models."""
-import abc
 import logging
 import pathlib
-from typing import Any, Literal, TypedDict
+from typing import Literal, TypedDict
 
 import fastapi
 import openai
+import pydantic
+import yaml
 from fastapi import status
 
 from linguaweb_api.core import config
@@ -16,6 +17,7 @@ OPENAI_GPT_MODEL = settings.OPENAI_GPT_MODEL
 OPENAI_TTS_MODEL = settings.OPENAI_TTS_MODEL
 OPENAI_STT_MODEL = settings.OPENAI_STT_MODEL
 OPENAI_VOICE = settings.OPENAI_VOICE
+PROMPT_FILE = settings.PROMPT_FILE
 LOGGER_NAME = settings.LOGGER_NAME
 
 logger = logging.getLogger(LOGGER_NAME)
@@ -28,8 +30,8 @@ class Message(TypedDict):
     content: str
 
 
-class OpenAIBaseClass(abc.ABC):
-    """An abstract base class for OpenAI models.
+class OpenAIBaseClass:
+    """A base class for OpenAI models.
 
     This class initializes the OpenAI client.
 
@@ -40,11 +42,6 @@ class OpenAIBaseClass(abc.ABC):
     def __init__(self) -> None:
         """Initializes a new instance of the OpenAIBaseClass class."""
         self.client = openai.OpenAI(api_key=OPENAI_API_KEY.get_secret_value())
-
-    @abc.abstractmethod
-    def run(self, *_args: Any, **_kwargs: Any) -> Any:  # noqa: ANN401
-        """Runs the model."""
-        ...
 
 
 class GPT(OpenAIBaseClass):
@@ -125,3 +122,27 @@ class SpeechToText(OpenAIBaseClass):
                 file=audio,
                 response_format="text",
             )  # type: ignore[return-value] # response_format overrides output type.
+
+
+class Prompts(pydantic.BaseModel):
+    """A class containing OpenAI Prompts."""
+
+    model_config = pydantic.ConfigDict(extra="forbid", frozen=True)
+
+    system: dict[str, str] | None
+    user: dict[str, str] | None
+
+    @classmethod
+    def load(cls, path: pathlib.Path = PROMPT_FILE) -> "Prompts":
+        """Loads prompts from a YAML file.
+
+        Args:
+            path: The path to the YAML file.
+
+        Returns:
+            The prompts.
+        """
+        with path.open("r", encoding="utf-8") as prompt_file:
+            prompts = yaml.safe_load(prompt_file)
+
+        return cls(**prompts)

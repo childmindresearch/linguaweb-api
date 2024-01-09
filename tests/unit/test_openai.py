@@ -104,3 +104,11 @@ async def test_gpt_run_method(
     assert (
         actual_response == expected_response
     ), "The run method should return the expected mocked response"
+
+
+def test_load_prompts() -> None:
+    """Test that the prompts are loaded correctly."""
+    prompts = openai.Prompts.load()
+
+    assert prompts.user is None
+    assert isinstance(prompts.system, dict)
