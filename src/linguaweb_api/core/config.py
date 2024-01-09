@@ -1,12 +1,15 @@
 """Settings for the API."""
 import functools
 import logging
+import pathlib
 from typing import NotRequired, TypedDict
 
 import pydantic
 import pydantic_settings
 
 from linguaweb_api.microservices import openai_constants
+
+DATA_DIR = pathlib.Path(__file__).parent.parent / "data"
 
 
 class Settings(pydantic_settings.BaseSettings):  # type: ignore[valid-type, misc]
@@ -28,6 +31,10 @@ class Settings(pydantic_settings.BaseSettings):  # type: ignore[valid-type, misc
         json_schema_extra={"env": "ENVIRONMENT"},
     )
 
+    PROMPT_FILE: pathlib.Path = pydantic.Field(
+        DATA_DIR / "prompts.yaml",
+        json_schema_extra={"env": "PROMPT_FILE"},
+    )
     OPENAI_API_KEY: pydantic.SecretStr = pydantic.Field(
         ...,
         json_schema_extra={"env": "OPENAI_API_KEY"},

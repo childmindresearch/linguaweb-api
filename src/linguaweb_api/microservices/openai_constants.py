@@ -37,24 +37,3 @@ class GPTModels(str, enum.Enum):
 
     GPT35_turbo_1106 = "gpt3-5-turbo-1106"
     GPT35_turbo = "gpt3-5-turbo"
-
-
-class Prompts(str, enum.Enum):
-    """A class representing the prompts for the GPT model."""
-
-    WORD_DESCRIPTION = (
-        "Return a brief definition for the word provided by the user without using the "
-        "word (or number, if relevant) in the definition."
-    )
-    WORD_SYNONYMS = (
-        "List synonyms for the following word without using the word (or "
-        "number, if relevant) at all as a comma separated list"
-    )
-    WORD_ANTONYMS = (
-        "List antonyms for the following word without using the word (or number, if "
-        "relevant) at all as a comma separated list"
-    )
-    WORD_JEOPARDY = (
-        "Return a very brief Jeopardy!-style description related to the following word "
-        "without using the word (or number, if relevant) at all"
-    )

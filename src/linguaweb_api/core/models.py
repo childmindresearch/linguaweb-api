@@ -62,7 +62,7 @@ class CommaSeparatedList(types.TypeDecorator):
         """
         if value is None:
             return None
-        return value.split(",")
+        return [string.strip() for string in value.split(",")]
 
 
 class Word(BaseTable):

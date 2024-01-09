@@ -1,0 +1,27 @@
+system:
+  word_description: >
+    Return a brief definition for the word provided by the user without using
+    the word (or number, if relevant) in the definition.
+
+    For example, if the user provides the word "happy", the response might be:
+    "feeling or showing pleasure or contentment".
+  word_synonyms: >
+    List synonyms for the following word without using the word (or number, if
+    relevant) at all as a comma separated list.
+
+    For example, if the user provides the word "happy", the response might be:
+    "cheerful, contented, overjoyed, ecstatic, elated, joyous, delighted".
+  word_antonyms: >
+    List antonyms for the following word without using the word (or number, if
+    relevant) at all as a comma separated list. Do not use a direct modification
+    of the word (e.g. do not return "unhappy" for "happy").
+
+    For example, if the user provides the word "happy", the response might be:
+    "sad, sorrowful, dejected, depressed, downcast, miserable".
+  word_jeopardy: >
+    Return a very brief Jeopardy!-style description related to the
+    following word without using the word (or number, if relevant) at all.
+
+    For example, if the user provides the word "tongue", the response might be:
+    "The taste buds that sense sweetness are on the tip of this organ."
+user:

@@ -8,7 +8,7 @@ from fastapi import status
 from sqlalchemy import orm
 
 from linguaweb_api.core import config, dictionary, models
-from linguaweb_api.microservices import openai, openai_constants, s3
+from linguaweb_api.microservices import openai, s3
 
 settings = config.get_settings()
 LOGGER_NAME = settings.LOGGER_NAME
@@ -48,10 +48,10 @@ async def add_word(word: str, session: orm.Session, s3_client: s3.S3) -> models.
     logger.debug("Creating new word.")
     new_word = models.Word(
         word=word,
-        description=text_tasks.description,
-        synonyms=text_tasks.synonyms,
-        antonyms=text_tasks.antonyms,
-        jeopardy=text_tasks.jeopardy,
+        description=text_tasks.word_description,
+        synonyms=text_tasks.word_synonyms,
+        antonyms=text_tasks.word_antonyms,
+        jeopardy=text_tasks.word_jeopardy,
         s3_key=s3_key,
     )
     s3_client.create(key=s3_key, data=listening_bytes)
@@ -95,10 +95,10 @@ async def add_preset_words(session: orm.Session, s3_client: s3.S3) -> list[model
 class _TextTasks(NamedTuple):
     """Named tuple for the text tasks."""
 
-    description: str
-    synonyms: str
-    antonyms: str
-    jeopardy: str
+    word_description: str
+    word_synonyms: str
+    word_antonyms: str
+    word_jeopardy: str
 
 
 async def _get_text_tasks(word: str) -> _TextTasks:
@@ -112,15 +112,19 @@ async def _get_text_tasks(word: str) -> _TextTasks:
     """
     logger.debug("Running GPT.")
     gpt = openai.GPT()
-    gpt_calls = [
-        gpt.run(prompt=word, system_prompt=openai_constants.Prompts.WORD_DESCRIPTION),
-        gpt.run(prompt=word, system_prompt=openai_constants.Prompts.WORD_SYNONYMS),
-        gpt.run(prompt=word, system_prompt=openai_constants.Prompts.WORD_ANTONYMS),
-        gpt.run(prompt=word, system_prompt=openai_constants.Prompts.WORD_JEOPARDY),
-    ]
+    prompts = openai.Prompts.load()
+    if prompts.system is None:
+        raise fastapi.HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="System prompts not loaded.",
+        )
+    gpt_calls = {
+        name: gpt.run(prompt=word, system_prompt=prompts.system[name])
+        for name in _TextTasks._fields
+    }
 
-    results = await asyncio.gather(*gpt_calls)
-    return _TextTasks(*results)
+    results = {key: await response for key, response in gpt_calls.items()}
+    return _TextTasks(**results)
 
 
 async def _get_listening_task(word: str) -> bytes:
