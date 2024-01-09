@@ -15,10 +15,10 @@ class TextTask:
 
     def __init__(self) -> None:
         """Initializes a new instance of the TextTask class."""
-        self.description = "test_description"
-        self.synonyms = "test_synonym"
-        self.antonyms = "test_antonym"
-        self.jeopardy = "test_jeopardy"
+        self.word_description = "test_description"
+        self.word_synonyms = "test_synonym"
+        self.word_antonyms = "test_antonym"
+        self.word_jeopardy = "test_jeopardy"
 
 
 @pytest.fixture(autouse=True)
@@ -42,9 +42,17 @@ def test_add_word(
 ) -> None:
     """Tests the add word endpoint."""
     response = client.post(endpoints.POST_ADD_WORD, data={"word": "test_word"})
+    expected_keys = {
+        "synonyms",
+        "antonyms",
+        "jeopardy",
+        "description",
+        "word",
+        "s3_key",
+    }
 
     assert response.status_code == status.HTTP_201_CREATED
-    assert all(item in response.json() for item in TextTask().__dict__)
+    assert all(item in response.json() for item in expected_keys)
 
 
 def test_add_word_already_exists(
