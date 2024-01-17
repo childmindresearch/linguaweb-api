@@ -1,7 +1,7 @@
 # LinguaWeb API
 
-[![Build](https://github.com/cmi-dair/linguaweb-api/actions/workflows/test.yaml/badge.svg?branch=main)](https://github.com/cmi-dair/linguaweb-api/actions/workflows/test.yaml?query=branch%3Amain)
-[![codecov](https://codecov.io/gh/cmi-dair/linguaweb-api/branch/main/graph/badge.svg?token=22HWWFWPW5)](https://codecov.io/gh/cmi-dair/linguaweb-api)
+[![Build](https://github.com/childmindresearch/linguaweb-api/actions/workflows/test.yaml/badge.svg?branch=main)](https://github.com/childmindresearch/linguaweb-api/actions/workflows/test.yaml?query=branch%3Amain)
+[![codecov](https://codecov.io/gh/childmindresearch/linguaweb-api/branch/main/graph/badge.svg?token=22HWWFWPW5)](https://codecov.io/gh/childmindresearch/linguaweb-api)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 ![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg)
 
@@ -36,7 +36,7 @@ Alternatively, use Docker to build and run the application in an isolated enviro
 1. Run the Docker container from the GitHub repository:
 
 ```bash
-docker run -p 8000:8000 ghcr.io/cmi-dair/linguaweb-api:main
+docker run -p 8000:8000 ghcr.io/childmindresearch/linguaweb-api:main
 ```
 
 ## Accessing the OpenAPI Specification
