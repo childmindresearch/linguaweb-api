@@ -68,10 +68,12 @@ class GPT(OpenAIBaseClass):
             Message(role="user", content=prompt),
         ]
 
+        logger.debug("Running GPT model.")
         response = self.client.chat.completions.create(
             model=OPENAI_GPT_MODEL,
             messages=messages,  # type: ignore[arg-type]
         )
+        logger.debug("GPT model finished running.")
 
         if not response.choices[0].message.content:
             raise fastapi.HTTPException(
