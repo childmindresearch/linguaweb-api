@@ -2,6 +2,7 @@
 import logging
 
 import fastapi
+import mangum
 from fastapi.middleware import cors
 
 from linguaweb_api.core import config, middleware
@@ -55,3 +56,7 @@ app.add_middleware(
 )
 logger.debug("Adding request logger middleware.")
 app.add_middleware(middleware.RequestLoggerMiddleware)
+
+
+logger.debug("Adding mangum handler.")
+handler = mangum.Mangum(app)
