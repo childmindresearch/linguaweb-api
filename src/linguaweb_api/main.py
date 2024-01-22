@@ -2,6 +2,8 @@
 import logging
 
 import fastapi
+import requests
+from fastapi import status
 from fastapi.middleware import cors
 
 from linguaweb_api.core import config, middleware
@@ -55,3 +57,10 @@ app.add_middleware(
 )
 logger.debug("Adding request logger middleware.")
 app.add_middleware(middleware.RequestLoggerMiddleware)
+
+# DEBUG: Remove later.
+response = requests.get("http://www.google.com", timeout=5)
+if response.status_code == status.HTTP_200_OK:
+    logger.debug("Successfully made request to Google.")
+else:
+    logger.debug("Failed to make request to Google.")
