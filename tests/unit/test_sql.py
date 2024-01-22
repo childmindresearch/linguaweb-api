@@ -13,6 +13,7 @@ settings = config.get_settings()
 POSTGRES_USER = settings.POSTGRES_USER
 POSTGRES_PASSWORD = settings.POSTGRES_PASSWORD
 POSTGRES_URL = settings.POSTGRES_URL
+POSTGRES_DATABASE = settings.POSTGRES_DATABASE
 
 
 @pytest.fixture()
@@ -66,7 +67,7 @@ def test_create_database(
         ("testing", "sqlite:///tests/test.sqlite"),
         (
             "production",
-            f"postgresql://{POSTGRES_USER.get_secret_value()}:{POSTGRES_PASSWORD.get_secret_value()}@{POSTGRES_URL}/linguaweb",
+            f"postgresql://{POSTGRES_USER.get_secret_value()}:{POSTGRES_PASSWORD.get_secret_value()}@{POSTGRES_URL}/{POSTGRES_DATABASE}",
         ),
     ],
 )

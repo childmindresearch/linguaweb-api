@@ -89,6 +89,10 @@ class Settings(pydantic_settings.BaseSettings):  # type: ignore[valid-type, misc
         "postgres",
         json_schema_extra={"env": "POSTGRES_PASSWORD"},
     )
+    POSTGRES_DATABASE: str = pydantic.Field(
+        "postgres",
+        json_schema_extra={"env": "POSTGRES_DATABASE"},
+    )
 
     SQLITE_FILE: str = pydantic.Field(
         "linguaweb.sqlite",

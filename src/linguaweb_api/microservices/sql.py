@@ -13,6 +13,7 @@ LOGGER_NAME = settings.LOGGER_NAME
 POSTGRES_URL = settings.POSTGRES_URL
 POSTGRES_USER = settings.POSTGRES_USER
 POSTGRES_PASSWORD = settings.POSTGRES_PASSWORD
+POSTGRES_DATABASE = settings.POSTGRES_DATABASE
 SQLITE_FILE = settings.SQLITE_FILE
 ENVIRONMENT = settings.ENVIRONMENT
 
@@ -64,7 +65,7 @@ class Database:
             "postgresql://"
             f"{POSTGRES_USER.get_secret_value()}:"
             f"{POSTGRES_PASSWORD.get_secret_value()}@"
-            f"{POSTGRES_URL}/linguaweb"
+            f"{POSTGRES_URL}/{POSTGRES_DATABASE}"
         )
 
 
