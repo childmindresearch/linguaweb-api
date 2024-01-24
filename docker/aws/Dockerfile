@@ -8,7 +8,7 @@ ENV PYTHONPATH=${LAMBDA_TASK_ROOT}/src:${PYTHONPATH}
 COPY pyproject.toml poetry.lock docker/aws/lambda.py ${LAMBDA_TASK_ROOT}
 COPY src ${LAMBDA_TASK_ROOT}/src
 COPY --from=jrottenberg/ffmpeg /usr/local /usr/local
-COPY --from=jrottenberg/ffmpeg /lib/x86_64-linux-gnu/libssl.so.1.0.0 /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /lib/x86_64-linux-gnu/
+COPY --from=jrottenberg/ffmpeg /lib/x86_64-linux-gnu/libexpat.so.1.6.0 /lib/x86_64-linux-gnu/libexpat.so.1 /lib/x86_64-linux-gnu/libssl.so.1.0.0 /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /lib/x86_64-linux-gnu/
 COPY --from=jrottenberg/ffmpeg /usr/lib/x86_64-linux-gnu/libgomp.so.1 /usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0 /usr/lib/
 
 RUN pip install poetry && \
