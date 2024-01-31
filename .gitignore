@@ -1,3 +1,6 @@
+minio
+postgresql
+.env*
 *.sqlite
 *.db
 .ruff_cache
