@@ -98,7 +98,7 @@ def test_add_preset_words(
 
     response = client.post(
         endpoints.POST_ADD_PRESET_WORDS,
-        data={"max_words": max_words},
+        data={"max_words": str(max_words)},
     )
 
     assert response.status_code == status.HTTP_201_CREATED
