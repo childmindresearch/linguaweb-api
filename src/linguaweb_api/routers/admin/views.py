@@ -5,7 +5,7 @@ import fastapi
 from fastapi import status
 from sqlalchemy import orm
 
-from linguaweb_api.core import config
+from linguaweb_api.core import config, models
 from linguaweb_api.microservices import s3, sql
 from linguaweb_api.routers.admin import controller, schemas
 
@@ -63,14 +63,21 @@ async def add_word(
 async def add_preset_words(
     session: orm.Session = fastapi.Depends(sql.get_session),
     s3_client: s3.S3 = fastapi.Depends(s3.S3),
-) -> list[schemas.Word]:
+    max_words: int | None = fastapi.Form(
+        None,
+        title="The maximum number of words to add per language.",
+        description="The maximum number of words to add per language.",
+    ),
+) -> list[models.Word]:
     """Adds preset words to the database.
 
     Args:
         session: The database session.
         s3_client: The S3 client to use.
+        max_words: The maximum number of words to add per language. If None,
+            adds all words.
     """
     logger.debug("Adding preset words.")
-    word_models = await controller.add_preset_words(session, s3_client)
+    word_models = await controller.add_preset_words(session, s3_client, max_words)
     logger.debug("Added preset words.")
-    return word_models  # type: ignore[return-value] # FastAPI magic casts to the type hint.
+    return word_models

@@ -5,10 +5,10 @@ import tempfile
 
 import fastapi
 import ffmpeg
+from cloai import openai_api
 from fastapi import status
 
 from linguaweb_api.core import config
-from linguaweb_api.microservices import openai
 
 settings = config.get_settings()
 LOGGER_NAME = settings.LOGGER_NAME
@@ -34,7 +34,7 @@ async def transcribe(audio: fastapi.UploadFile) -> str:
     with tempfile.TemporaryDirectory() as temp_dir:
         target_path = pathlib.Path(temp_dir) / f"audio{TARGET_FILE_FORMAT}"
         _convert_audio(audio, temp_dir, target_path)
-        return await openai.SpeechToText().run(target_path)
+        return await openai_api.SpeechToText().run(target_path)
 
 
 async def _check_file_size(audio: fastapi.UploadFile, max_size: int) -> None:

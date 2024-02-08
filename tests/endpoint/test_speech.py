@@ -8,9 +8,9 @@ from typing import Any
 import ffmpeg
 import pytest
 import pytest_mock
+from cloai import openai_api
 from fastapi import status, testclient
 
-from linguaweb_api.microservices import openai
 from tests.endpoint import conftest
 
 
@@ -52,7 +52,7 @@ def test_transcribe(
     """Tests the transcribe endpoint."""
     expected_transcription = "Expected transcription"
     mock_stt_run = mocker.patch.object(
-        openai.SpeechToText,
+        openai_api.SpeechToText,
         "run",
         return_value=expected_transcription,
     )

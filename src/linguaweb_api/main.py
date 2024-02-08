@@ -2,8 +2,7 @@
 import logging
 
 import fastapi
-import requests
-from fastapi import status
+from fastapi import responses
 from fastapi.middleware import cors
 
 from linguaweb_api.core import config, middleware
@@ -23,7 +22,7 @@ logger = logging.getLogger(LOGGER_NAME)
 logger.info("Starting API.")
 app = fastapi.FastAPI(
     title="LinguaWeb API",
-    version="0.0.1",
+    version="0.0.2",
     contact={
         "name": "Center for Data Analytics, Innovation, and Rigor",
         "url": "https://github.com/childmindresearch/",
@@ -32,6 +31,13 @@ app = fastapi.FastAPI(
     swagger_ui_parameters={"operationsSorter": "method"},
     openapi_tags=config.open_api_specification(),  # type: ignore[arg-type] # Our class is more specific.
 )
+
+
+@app.get("/")
+async def direct_to_docs() -> responses.RedirectResponse:
+    """Redirects to the API documentation."""
+    return responses.RedirectResponse("/docs")
+
 
 logger.info("Initializing API routes.")
 base_router = fastapi.APIRouter(prefix="/api/v1")
@@ -57,10 +63,3 @@ app.add_middleware(
 )
 logger.debug("Adding request logger middleware.")
 app.add_middleware(middleware.RequestLoggerMiddleware)
-
-# DEBUG: Remove later.
-response = requests.get("http://www.google.com", timeout=5)
-if response.status_code == status.HTTP_200_OK:
-    logger.debug("Successfully made request to Google.")
-else:
-    logger.debug("Failed to make request to Google.")

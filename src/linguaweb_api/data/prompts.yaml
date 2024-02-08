@@ -1,27 +1,91 @@
 system:
-  word_description: >
-    Return a brief definition for the word provided by the user without using
-    the word (or number, if relevant) in the definition.
+  en:
+    word_description: >
+      Return a brief definition for the word provided by the user without using
+      the word (or number, if relevant) in the definition.
 
-    For example, if the user provides the word "happy", the response might be:
-    "feeling or showing pleasure or contentment".
-  word_synonyms: >
-    List synonyms for the following word without using the word (or number, if
-    relevant) at all as a comma separated list.
+      For example, if the user provides the word "happy", the response might be:
+      "feeling or showing pleasure or contentment".
+    word_synonyms: >
+      List synonyms for the following word without using the word (or number, if
+      relevant) at all as a comma separated list.
 
-    For example, if the user provides the word "happy", the response might be:
-    "cheerful, contented, overjoyed, ecstatic, elated, joyous, delighted".
-  word_antonyms: >
-    List antonyms for the following word without using the word (or number, if
-    relevant) at all as a comma separated list. Do not use a direct modification
-    of the word (e.g. do not return "unhappy" for "happy").
+      For example, if the user provides the word "happy", the response might be:
+      "cheerful, contented, overjoyed, ecstatic, elated, joyous, delighted".
+    word_antonyms: >
+      List antonyms for the following word without using the word (or number, if
+      relevant) at all as a comma separated list. Do not use a direct modification
+      of the word (e.g. do not return "unhappy" for "happy").
 
-    For example, if the user provides the word "happy", the response might be:
-    "sad, sorrowful, dejected, depressed, downcast, miserable".
-  word_jeopardy: >
-    Return a very brief Jeopardy!-style description related to the
-    following word without using the word (or number, if relevant) at all.
+      For example, if the user provides the word "happy", the response might be:
+      "sad, sorrowful, dejected, depressed, downcast, miserable".
+    word_jeopardy: >
+      Return a very brief Jeopardy!-style description related to the
+      following word without using the word (or number, if relevant) at all.
 
-    For example, if the user provides the word "tongue", the response might be:
-    "The taste buds that sense sweetness are on the tip of this organ."
+      For example, if the user provides the word "tongue", the response might be:
+      "The taste buds that sense sweetness are on the tip of this organ."
+
+  fr:
+    word_description: >
+      Retournez une brève définition pour le mot fourni par l'utilisateur sans
+      utiliser le mot (ou le nombre, si pertinent) dans la définition.
+
+      Par exemple, si l'utilisateur fournit le mot "heureux", la réponse pourrait
+      être: "sentiment ou manifestation de plaisir ou de contentement".
+    word_synonyms: >
+      Liste des synonymes pour le mot suivant sans utiliser le mot (ou le nombre,
+      si pertinent) du tout en tant que liste séparée par des virgules.
+
+      Par exemple, si l'utilisateur fournit le mot "heureux", la réponse pourrait
+      être: "joyeux, content, ravi, extatique, enchanté, joyeux, ravi".
+    word_antonyms: >
+      Liste des antonymes pour le mot suivant sans utiliser le mot (ou le nombre,
+      si pertinent) du tout en tant que liste séparée par des virgules. N'utilisez
+      pas de modification directe du mot (par exemple, ne retournez pas "malheureux"
+      pour "heureux").
+
+      Par exemple, si l'utilisateur fournit le mot "heureux", la réponse pourrait
+      être: "triste, affligé, abattu, déprimé, abattu, misérable".
+    word_jeopardy: >
+      Retournez une description très brève de style Jeopardy! liée au mot suivant
+      sans utiliser le mot (ou le nombre, si pertinent) du tout.
+
+      Par exemple, si l'utilisateur fournit le mot "langue", la réponse pourrait
+      être: "Les papilles gustatives qui perçoivent la douceur se trouvent à l'extrémité
+      de cet organe".
+
+  nl:
+    word_description: >
+      Geef een korte definitie voor het door de gebruiker verstrekte woord
+      zonder het woord (of nummer, indien relevant) te gebruiken in de
+      definitie.
+
+      Bijvoorbeeld, als de gebruiker het woord "blij" levert, kan de reactie
+      zijn "het gevoel of het tonen van plezier of tevredenheid".
+    word_synonyms: >
+      Geef synoniemen voor het volgende woord zonder het woord (of nummer,
+      indien relevant) te gebruiken. Lever de synoniemen als een komma
+      gescheiden lijst.
+
+      Bijvoorbeeld, als de gebruiker het woord "blij" levert, kan de reactie
+      zijn "vrolijk, tevreden, opgetogen, extatisch, opgelucht, vreugdevol,
+      verrukt".
+    word_antonyms: >
+      Geef antoniemen voor het volgende woord zonder het woord (of nummer,
+      indien relevant) te gebruiken. Lever de antoniemen als een komma
+      gescheiden lijst. Gebruik geen directe modificatie van het woord (bijv.
+      gebruik niet "ongelukkig" voor "gelukkig").
+
+      Bijvoorbeeld, als de gebruiker het woord "blij" levert, kan de reactie
+      zijn "bedroefd, droevig, neerslachtig, gedeprimeerd, neergeslagen,
+      ellendig".
+    word_jeopardy: >
+      Geef een zeer korte Jeopardy!-stijl beschrijving gerelateerd aan het
+      volgende woord zonder het woord (of nummer, indien relevant) helemaal te
+      gebruiken.
+
+      Bijvoorbeeld, als de gebruiker het woord "tong" levert, kan de reactie zijn: "De
+      smaakpapillen die zoetheid waarnemen bevinden zich op de punt van dit orgaan".
+
 user:

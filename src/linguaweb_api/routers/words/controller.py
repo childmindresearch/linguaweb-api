@@ -100,13 +100,13 @@ def download_audio(identifier: int, session: orm.Session, s3_client: s3.S3) -> b
     """
     logger.debug("Downloading audio.")
     word = session.query(models.Word).filter_by(id=identifier).first()
-    if not word or not word.s3_key:
+    if not word:
         raise fastapi.HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Audio not found.",
         )
     try:
-        return s3_client.read(word.s3_key)
+        return s3_client.read(word.s3_file.s3_key)
     except errorfactory.ClientError as exception_info:
         raise fastapi.HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
