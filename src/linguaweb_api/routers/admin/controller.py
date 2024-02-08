@@ -17,6 +17,7 @@ from linguaweb_api.microservices import s3
 settings = config.get_settings()
 LOGGER_NAME = settings.LOGGER_NAME
 OPENAI_VOICE = settings.OPENAI_VOICE
+OPENAI_API_KEY = settings.OPENAI_API_KEY
 PROMPT_FILE = settings.PROMPT_FILE
 logger = logging.getLogger(LOGGER_NAME)
 
@@ -132,7 +133,7 @@ async def _get_text_tasks(word: str, language: Literal["en", "nl", "fr"]) -> _Te
         The text tasks.
     """
     logger.debug("Running GPT.")
-    gpt = openai_api.ChatCompletion()
+    gpt = openai_api.ChatCompletion(api_key=OPENAI_API_KEY)
     prompts = _Prompts.load()
     if prompts.system is None:
         raise fastapi.HTTPException(
@@ -158,8 +159,8 @@ async def _get_listening_task(word: str) -> bytes:
     Returns:
         The audio bytes and the S3 key.
     """
-    tts = openai_api.TextToSpeech()
-    return await tts.run(word)
+    tts = openai_api.TextToSpeech(api_key=OPENAI_API_KEY)
+    return await tts.run(word, voice=OPENAI_VOICE.value)
 
 
 class _Prompts(pydantic.BaseModel):

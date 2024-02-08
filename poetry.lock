@@ -467,13 +467,13 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "cloai"
-version = "0.0.1a12"
+version = "0.0.1a13"
 description = "A CLI for OpenAI's API"
 optional = false
 python-versions = ">3.8,<4.0"
 files = [
-    {file = "cloai-0.0.1a12-py3-none-any.whl", hash = "sha256:c15071b4b63dad2486f04bccd9f3dc43879b428aa04227c5929ce2b161166a76"},
-    {file = "cloai-0.0.1a12.tar.gz", hash = "sha256:7d1f4a7b723554eb921687764edbae63761fd6d020a8d71506667c75745242a3"},
+    {file = "cloai-0.0.1a13-py3-none-any.whl", hash = "sha256:c9a745f3284c2ecf15cf5a17554b14e989e6f1de4e81a1a4e8dba2ae2d76325e"},
+    {file = "cloai-0.0.1a13.tar.gz", hash = "sha256:542ef167c90aa25d1188225dce2d25a26fc34017a0c86a14bb3c887550de4a06"},
 ]
 
 [package.dependencies]
