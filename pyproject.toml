@@ -9,21 +9,21 @@ packages = [{include = "linguaweb_api", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = "^0.108.0"
+fastapi = "^0.109.2"
 pydantic-settings = "^2.1.0"
-uvicorn = "^0.25.0"
+uvicorn = "^0.27.0"
 sqlalchemy = "^2.0.25"
 openai = "^1.11.1"
 psycopg2-binary = "^2.9.9"
 boto3 = "^1.34.38"
-python-multipart = "^0.0.6"
+python-multipart = "^0.0.7"
 ffmpeg-python = "^0.2.0"
 pyyaml = "^6.0.1"
 pytest-dotenv = "^0.5.2"
 mangum = "^0.17.0"
 instructor = "^0.5.2"
 ruff = "^0.2.1"
-cloai = "^0.0.1a13"
+cloai = "^0.0.1a14"
 textstat = "^0.7.3"
 
 [tool.poetry.group.dev.dependencies]
