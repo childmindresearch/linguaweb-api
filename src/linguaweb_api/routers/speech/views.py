@@ -32,16 +32,20 @@ router = fastapi.APIRouter(prefix="/speech", tags=["speech"])
         },
     },
 )
-async def transcribe(audio: fastapi.UploadFile = fastapi.File(...)) -> str:
+async def transcribe(
+    audio: fastapi.UploadFile = fastapi.File(...),
+    language: str = fastapi.Form(...),
+) -> str:
     """Transcribes audio using OpenAI's Whisper API.
 
     Args:
         audio: The audio file.
+        language: The language of the audio.
 
     Returns:
         The transcription of the audio as a string.
     """
     logger.debug("Transcribing audio.")
-    transcription = controller.transcribe(audio)
+    transcription = controller.transcribe(audio, language=language)
     logger.debug("Transcribed audio.")
     return await transcription

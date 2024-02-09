@@ -11,4 +11,3 @@ class WordData(pydantic.BaseModel):
     synonyms: list[str]
     antonyms: list[str]
     jeopardy: str
-    s3_key: str

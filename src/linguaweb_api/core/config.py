@@ -1,4 +1,5 @@
 """Settings for the API."""
+import enum
 import functools
 import logging
 import pathlib
@@ -7,9 +8,55 @@ from typing import NotRequired, TypedDict
 import pydantic
 import pydantic_settings
 
-from linguaweb_api.microservices import openai_constants
-
 DATA_DIR = pathlib.Path(__file__).parent.parent / "data"
+
+
+class Voices(str, enum.Enum):
+    """A class representing the voices for the Text-To-Speech model."""
+
+    ALLOY = "alloy"
+    ECHO = "echo"
+    FABLE = "fable"
+    ONYX = "onyx"
+    NOVA = "nova"
+    SHIMMER = "shimmer"
+
+
+class TTSModels(str, enum.Enum):
+    """Supported Text-To-Speech models."""
+
+    TTS1 = "tts-1"
+
+
+class STTModels(str, enum.Enum):
+    """Supported Speech-To-Text models."""
+
+    WHISPER1 = "whisper-1"
+
+
+class GPTModels(str, enum.Enum):
+    """Supported GPT models."""
+
+    GPT4_1106_Preview = "gpt-4-1106-preview"
+    GPT4 = "gpt-4"
+
+    GPT35_turbo_1106 = "gpt3-5-turbo-1106"
+    GPT35_turbo = "gpt3-5-turbo"
+
+
+class ExternalDocumentation(TypedDict):
+    """OpenAPI external documentation definition."""
+
+    description: str
+    url: str
+
+
+class OpenApiTag(TypedDict):
+    """OpenAPI tag definition."""
+
+    name: str
+    description: str
+    externalDocs: NotRequired[ExternalDocumentation]
 
 
 class Settings(pydantic_settings.BaseSettings):  # type: ignore[valid-type, misc]
@@ -39,19 +86,19 @@ class Settings(pydantic_settings.BaseSettings):  # type: ignore[valid-type, misc
         ...,
         json_schema_extra={"env": "OPENAI_API_KEY"},
     )
-    OPENAI_VOICE: openai_constants.Voices = pydantic.Field(
+    OPENAI_VOICE: Voices = pydantic.Field(
         "onyx",
         json_schema_extra={"env": "OPENAI_VOICE"},
     )
-    OPENAI_GPT_MODEL: openai_constants.GPTModels = pydantic.Field(
+    OPENAI_GPT_MODEL: GPTModels = pydantic.Field(
         "gpt-4-1106-preview",
         json_schema_extra={"env": "OPENAI_GPT_MODEL"},
     )
-    OPENAI_TTS_MODEL: openai_constants.TTSModels = pydantic.Field(
+    OPENAI_TTS_MODEL: TTSModels = pydantic.Field(
         "tts-1",
         json_schema_extra={"env": "OPENAI_TTS_MODEL"},
     )
-    OPENAI_STT_MODEL: openai_constants.STTModels = pydantic.Field(
+    OPENAI_STT_MODEL: STTModels = pydantic.Field(
         "whisper-1",
         json_schema_extra={"env": "OPENAI_STT_MODEL"},
     )
@@ -124,21 +171,6 @@ def initialize_logger() -> None:
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
     logger.addHandler(handler)
-
-
-class ExternalDocumentation(TypedDict):
-    """OpenAPI external documentation definition."""
-
-    description: str
-    url: str
-
-
-class OpenApiTag(TypedDict):
-    """OpenAPI tag definition."""
-
-    name: str
-    description: str
-    externalDocs: NotRequired[ExternalDocumentation]
 
 
 def open_api_specification() -> list[OpenApiTag]:

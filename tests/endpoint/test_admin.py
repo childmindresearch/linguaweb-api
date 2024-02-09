@@ -1,4 +1,5 @@
 """Tests for the admin endpoints."""
+import pathlib
 from collections.abc import Generator
 
 import moto
@@ -6,7 +7,7 @@ import pytest
 import pytest_mock
 from fastapi import status, testclient
 
-from linguaweb_api.core import dictionary
+import linguaweb_api
 from tests.endpoint import conftest
 
 
@@ -43,12 +44,13 @@ def test_add_word(
     """Tests the add word endpoint."""
     response = client.post(endpoints.POST_ADD_WORD, data={"word": "test_word"})
     expected_keys = {
+        "id",
         "synonyms",
         "antonyms",
         "jeopardy",
         "description",
         "word",
-        "s3_key",
+        "language",
     }
 
     assert response.status_code == status.HTTP_201_CREATED
@@ -61,10 +63,20 @@ def test_add_word_already_exists(
 ) -> None:
     """Tests the add word endpoint when the word already exists."""
     client.post(endpoints.POST_ADD_WORD, data={"word": "test_word"})
+    expected_keys = {
+        "id",
+        "synonyms",
+        "antonyms",
+        "jeopardy",
+        "description",
+        "word",
+        "language",
+    }
 
     response = client.post(endpoints.POST_ADD_WORD, data={"word": "test_word"})
 
-    assert response.status_code == status.HTTP_409_CONFLICT
+    assert response.status_code == status.HTTP_201_CREATED
+    assert set(response.json().keys()) == expected_keys
 
 
 def test_add_preset_words(
@@ -72,20 +84,22 @@ def test_add_preset_words(
     endpoints: conftest.Endpoints,
 ) -> None:
     """Tests the add preset words endpoint."""
-    response = client.post(endpoints.POST_ADD_PRESET_WORDS)
-    words = dictionary.read_words()
+    max_words = 2
+    word_files = [
+        pathlib.Path(linguaweb_api.__file__).parent
+        / "data"
+        / f"default_words_{language}.txt"
+        for language in ("en-US", "nl-NL", "fr-FR")
+    ]
+    words = set()
+    for word_file in word_files:
+        with word_file.open() as file:
+            words.update(file.read().splitlines()[:max_words])
+
+    response = client.post(
+        endpoints.POST_ADD_PRESET_WORDS,
+        data={"max_words": str(max_words)},
+    )
 
     assert response.status_code == status.HTTP_201_CREATED
-    assert [word["word"] for word in response.json()] == words
-
-
-def test_add_preset_words_already_exist(
-    client: testclient.TestClient,
-    endpoints: conftest.Endpoints,
-) -> None:
-    """Tests the add preset words endpoint when the words already exist."""
-    client.post(endpoints.POST_ADD_PRESET_WORDS)
-
-    response = client.post(endpoints.POST_ADD_PRESET_WORDS)
-
-    assert response.status_code == status.HTTP_409_CONFLICT
+    assert {word["word"] for word in response.json()} == words

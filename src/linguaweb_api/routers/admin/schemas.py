@@ -13,4 +13,4 @@ class Word(pydantic.BaseModel):
     synonyms: list[str]
     antonyms: list[str]
     jeopardy: str
-    s3_key: str
+    language: str

@@ -69,10 +69,35 @@ class Word(BaseTable):
     """Table for text tasks."""
 
     __tablename__ = "words"
+    __tableargs__ = (sqlalchemy.UniqueConstraint("word", "language", "age"),)
 
-    word: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(64), unique=True)
+    word: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(64))
     description: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(1024))
     synonyms: orm.Mapped[str] = orm.mapped_column(CommaSeparatedList)
     antonyms: orm.Mapped[str] = orm.mapped_column(CommaSeparatedList)
     jeopardy: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(1024))
+    language: orm.Mapped[str] = orm.mapped_column(
+        sqlalchemy.String(4),
+    )
+    age: orm.Mapped[int] = orm.mapped_column(sqlalchemy.Integer)
+
+    s3_id: orm.Mapped[int] = orm.mapped_column(
+        sqlalchemy.ForeignKey("s3_files.id"),
+    )
+
+    s3_file: orm.Mapped["S3File"] = orm.relationship(
+        "S3File",
+        back_populates="words",
+    )
+
+
+class S3File(BaseTable):
+    """Table for tracking files on S3."""
+
+    __tablename__ = "s3_files"
+
     s3_key: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(1024), unique=True)
+    words: orm.Mapped[list["Word"]] = orm.relationship(
+        back_populates="s3_file",
+        cascade="all, delete-orphan",
+    )

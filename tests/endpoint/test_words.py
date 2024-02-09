@@ -18,13 +18,16 @@ def word(session: orm.Session) -> models.Word:
     Args:
         session: The database session.
     """
+    s3 = models.S3File(s3_key="test_key")
     audio = models.Word(
         word=WORD,
         description="The description is the word.",
         synonyms=["The", "synonym", "is", "the", "word."],
         antonyms=["The", "antonym", "is", "the", "word."],
         jeopardy="The jeopardy is the word.",
-        s3_key="mock_s3_key",
+        language="en",
+        age=6,
+        s3_file=s3,
     )
     session.add(audio)
     session.commit()
