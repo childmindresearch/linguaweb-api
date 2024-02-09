@@ -77,7 +77,7 @@ class Word(BaseTable):
     antonyms: orm.Mapped[str] = orm.mapped_column(CommaSeparatedList)
     jeopardy: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(1024))
     language: orm.Mapped[str] = orm.mapped_column(
-        sqlalchemy.String(4),
+        sqlalchemy.String(16),
     )
     age: orm.Mapped[int] = orm.mapped_column(sqlalchemy.Integer)
 
