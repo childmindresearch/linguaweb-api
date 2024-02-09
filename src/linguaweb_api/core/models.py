@@ -69,7 +69,7 @@ class Word(BaseTable):
     """Table for text tasks."""
 
     __tablename__ = "words"
-    __tableargs__ = (sqlalchemy.UniqueConstraint("word", "language"),)
+    __tableargs__ = (sqlalchemy.UniqueConstraint("word", "language", "age"),)
 
     word: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(64))
     description: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(1024))
@@ -79,6 +79,7 @@ class Word(BaseTable):
     language: orm.Mapped[str] = orm.mapped_column(
         sqlalchemy.String(4),
     )
+    age: orm.Mapped[int] = orm.mapped_column(sqlalchemy.Integer)
 
     s3_id: orm.Mapped[int] = orm.mapped_column(
         sqlalchemy.ForeignKey("s3_files.id"),

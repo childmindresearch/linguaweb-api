@@ -2,6 +2,7 @@
 import logging
 
 import fastapi
+import sqlalchemy
 from botocore import errorfactory
 from fastapi import status
 from sqlalchemy import orm
@@ -15,10 +16,16 @@ LOGGER_NAME = settings.LOGGER_NAME
 logger = logging.getLogger(LOGGER_NAME)
 
 
-async def get_all_word_ids(session: orm.Session) -> list[int]:
+async def get_all_word_ids(
+    language: str | None,
+    age: int | None,
+    session: orm.Session,
+) -> list[int]:
     """Returns all word IDs.
 
     Args:
+        language: The language of the words.
+        age: The age of the target audience.
         session: The database session.
 
     Returns:
@@ -26,7 +33,13 @@ async def get_all_word_ids(session: orm.Session) -> list[int]:
 
     """
     logger.debug("Getting all word IDs.")
-    words = session.query(models.Word.id).all()
+    query = sqlalchemy.select(models.Word.id)
+    if language:
+        query = query.where(models.Word.language == language)
+    if age:
+        query = query.where(models.Word.age == age)
+    words = session.execute(query)
+
     return [word.id for word in words]
 
 

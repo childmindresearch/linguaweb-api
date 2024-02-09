@@ -1,17 +1,21 @@
 system:
-  en:
+  en-US:
     word_description: >
       Return a brief definition for the word provided by the user without using
       the word (or number, if relevant) in the definition.
 
       For example, if the user provides the word "happy", the response might be:
       "feeling or showing pleasure or contentment".
+
+      Provide the response at a level appropriate for a {{AGE}} year old.
     word_synonyms: >
       List synonyms for the following word without using the word (or number, if
       relevant) at all as a comma separated list.
 
       For example, if the user provides the word "happy", the response might be:
       "cheerful, contented, overjoyed, ecstatic, elated, joyous, delighted".
+
+      Provide the response at a level appropriate for a {{AGE}} year old.
     word_antonyms: >
       List antonyms for the following word without using the word (or number, if
       relevant) at all as a comma separated list. Do not use a direct modification
@@ -19,6 +23,8 @@ system:
 
       For example, if the user provides the word "happy", the response might be:
       "sad, sorrowful, dejected, depressed, downcast, miserable".
+
+      Provide the response at a level appropriate for a {{AGE}} year old.
     word_jeopardy: >
       Return a very brief Jeopardy!-style description related to the
       following word without using the word (or number, if relevant) at all.
@@ -26,19 +32,25 @@ system:
       For example, if the user provides the word "tongue", the response might be:
       "The taste buds that sense sweetness are on the tip of this organ."
 
-  fr:
+      Provide the response at a level appropriate for a {{AGE}} year old.
+
+  fr-FR:
     word_description: >
       Retournez une brève définition pour le mot fourni par l'utilisateur sans
       utiliser le mot (ou le nombre, si pertinent) dans la définition.
 
       Par exemple, si l'utilisateur fournit le mot "heureux", la réponse pourrait
       être: "sentiment ou manifestation de plaisir ou de contentement".
+
+      Fournis la réponse à un niveau approprié pour un enfant de {{AGE}} ans.
     word_synonyms: >
       Liste des synonymes pour le mot suivant sans utiliser le mot (ou le nombre,
       si pertinent) du tout en tant que liste séparée par des virgules.
 
       Par exemple, si l'utilisateur fournit le mot "heureux", la réponse pourrait
       être: "joyeux, content, ravi, extatique, enchanté, joyeux, ravi".
+
+      Fournis la réponse à un niveau approprié pour un enfant de {{AGE}} ans.
     word_antonyms: >
       Liste des antonymes pour le mot suivant sans utiliser le mot (ou le nombre,
       si pertinent) du tout en tant que liste séparée par des virgules. N'utilisez
@@ -47,6 +59,8 @@ system:
 
       Par exemple, si l'utilisateur fournit le mot "heureux", la réponse pourrait
       être: "triste, affligé, abattu, déprimé, abattu, misérable".
+
+      Fournis la réponse à un niveau approprié pour un enfant de {{AGE}} ans.
     word_jeopardy: >
       Retournez une description très brève de style Jeopardy! liée au mot suivant
       sans utiliser le mot (ou le nombre, si pertinent) du tout.
@@ -55,7 +69,9 @@ system:
       être: "Les papilles gustatives qui perçoivent la douceur se trouvent à l'extrémité
       de cet organe".
 
-  nl:
+      Fournis la réponse à un niveau approprié pour un enfant de {{AGE}} ans.
+
+  nl-NL:
     word_description: >
       Geef een korte definitie voor het door de gebruiker verstrekte woord
       zonder het woord (of nummer, indien relevant) te gebruiken in de
@@ -63,6 +79,8 @@ system:
 
       Bijvoorbeeld, als de gebruiker het woord "blij" levert, kan de reactie
       zijn "het gevoel of het tonen van plezier of tevredenheid".
+
+      Geef de reactie op een niveau dat geschikt is voor een {{AGE}} jarige.
     word_synonyms: >
       Geef synoniemen voor het volgende woord zonder het woord (of nummer,
       indien relevant) te gebruiken. Lever de synoniemen als een komma
@@ -71,6 +89,8 @@ system:
       Bijvoorbeeld, als de gebruiker het woord "blij" levert, kan de reactie
       zijn "vrolijk, tevreden, opgetogen, extatisch, opgelucht, vreugdevol,
       verrukt".
+
+      Geef de reactie op een niveau dat geschikt is voor een {{AGE}} jarige.
     word_antonyms: >
       Geef antoniemen voor het volgende woord zonder het woord (of nummer,
       indien relevant) te gebruiken. Lever de antoniemen als een komma
@@ -80,6 +100,8 @@ system:
       Bijvoorbeeld, als de gebruiker het woord "blij" levert, kan de reactie
       zijn "bedroefd, droevig, neerslachtig, gedeprimeerd, neergeslagen,
       ellendig".
+
+      Geef de reactie op een niveau dat geschikt is voor een {{AGE}} jarige.
     word_jeopardy: >
       Geef een zeer korte Jeopardy!-stijl beschrijving gerelateerd aan het
       volgende woord zonder het woord (of nummer, indien relevant) helemaal te
@@ -87,5 +109,7 @@ system:
 
       Bijvoorbeeld, als de gebruiker het woord "tong" levert, kan de reactie zijn: "De
       smaakpapillen die zoetheid waarnemen bevinden zich op de punt van dit orgaan".
+
+      Geef de reactie op een niveau dat geschikt is voor een {{AGE}} jarige.
 
 user:

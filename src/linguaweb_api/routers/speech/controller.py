@@ -19,11 +19,12 @@ logger = logging.getLogger(LOGGER_NAME)
 TARGET_FILE_FORMAT = ".mp3"
 
 
-async def transcribe(audio: fastapi.UploadFile) -> str:
+async def transcribe(audio: fastapi.UploadFile, language: str = "en") -> str:
     """Transcribes audio using OpenAI's Whisper.
 
     Args:
         audio: The audio file.
+        language: The language of the audio.
 
     Returns:
         str: The transcription of the audio as a string. The string is
@@ -35,7 +36,8 @@ async def transcribe(audio: fastapi.UploadFile) -> str:
     with tempfile.TemporaryDirectory() as temp_dir:
         target_path = pathlib.Path(temp_dir) / f"audio{TARGET_FILE_FORMAT}"
         _convert_audio(audio, temp_dir, target_path)
-        return await openai_api.SpeechToText(api_key=OPENAI_API_KEY).run(target_path)
+        client = openai_api.SpeechToText(api_key=OPENAI_API_KEY.get_secret_value())
+        return await client.run(target_path, language=language)
 
 
 async def _check_file_size(audio: fastapi.UploadFile, max_size: int) -> None:

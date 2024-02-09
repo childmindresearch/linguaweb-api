@@ -89,7 +89,7 @@ def test_add_preset_words(
         pathlib.Path(linguaweb_api.__file__).parent
         / "data"
         / f"default_words_{language}.txt"
-        for language in ("en", "nl", "fr")
+        for language in ("en-US", "nl-NL", "fr-FR")
     ]
     words = set()
     for word_file in word_files:

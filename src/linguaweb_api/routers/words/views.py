@@ -25,15 +25,27 @@ router = fastapi.APIRouter(prefix="/words", tags=["words"])
     description="""Returns the IDs of all words in the database.""",
 )
 async def get_all_word_ids(
+    language: str | None = fastapi.Query(
+        None,
+        title="The language of the words.",
+        description="The language of the words.",
+    ),
+    age: int | None = fastapi.Query(
+        None,
+        title="The age of the target audience.",
+        description="The age of the target audience.",
+    ),
     session: orm.Session = fastapi.Depends(sql.get_session),
 ) -> list[int]:
     """Returns all word IDs.
 
     Args:
+        language: The language of the words.
+        age: The age of the target audience.
         session: The database session.
     """
     logger.debug("Getting all word IDs.")
-    word_ids = await controller.get_all_word_ids(session)
+    word_ids = await controller.get_all_word_ids(language, age, session)
     logger.debug("Got all word IDs.")
     return word_ids
 

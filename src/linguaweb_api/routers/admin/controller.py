@@ -26,7 +26,8 @@ async def add_word(
     word: str,
     session: orm.Session,
     s3_client: s3.S3,
-    language: Literal["en", "nl", "fr"] = "en",
+    language: Literal["en-US", "nl-NL", "fr-FR"] = "en-US",
+    age: int = 12,
 ) -> models.Word:
     """Adds a word to the database.
 
@@ -35,17 +36,20 @@ async def add_word(
         session: The database session.
         s3_client: The S3 client to use.
         language: The language of the word.
+        age: The age of the target audience.
 
     Returns:
         The word model.
     """
     logger.debug("Adding word.")
-    word_model = session.query(models.Word).filter_by(word=word).first()
+    word_model = (
+        session.query(models.Word).filter_by(word=word, language=language).first()
+    )
     if word_model:
         return word_model
 
     logger.debug("Word does not exist in database.")
-    text_tasks_promise = _get_text_tasks(word, language)
+    text_tasks_promise = _get_text_tasks(word, language, age)
     listening_bytes_promise = _get_listening_task(word)
     s3_key = f"{word}_{OPENAI_VOICE.value}_{language}.mp3"
 
@@ -67,6 +71,7 @@ async def add_word(
         antonyms=text_tasks.word_antonyms,
         jeopardy=text_tasks.word_jeopardy,
         language=language,
+        age=age,
         s3_file=existing_s3,
     )
     s3_client.create(key=s3_key, data=listening_bytes)
@@ -95,18 +100,19 @@ async def add_preset_words(
     logger.debug("Adding preset words.")
     promises = []
 
-    languages = ("en", "nl", "fr")
-    for language in languages:
-        preset_words = _read_words(language)  # type: ignore[arg-type]
-        if max_words:
-            preset_words = preset_words[:max_words]
+    languages = ("en-US", "nl-NL", "fr-FR")
+    for age in (6, 9, 12):
+        for language in languages:
+            preset_words = _read_words(language)  # type: ignore[arg-type]
+            if max_words:
+                preset_words = preset_words[:max_words]
 
-        promises.extend(
-            [
-                add_word(word, session, s3_client, language=language)  # type: ignore[arg-type]
-                for word in preset_words
-            ],
-        )
+            promises.extend(
+                [
+                    add_word(word, session, s3_client, language=language, age=age)  # type: ignore[arg-type]
+                    for word in preset_words
+                ],
+            )
 
     word_models = await asyncio.gather(*promises)
     logger.debug("Added preset words.")
@@ -122,18 +128,23 @@ class _TextTasks(NamedTuple):
     word_jeopardy: str
 
 
-async def _get_text_tasks(word: str, language: Literal["en", "nl", "fr"]) -> _TextTasks:
+async def _get_text_tasks(
+    word: str,
+    language: Literal["en-US", "nl-NL", "fr-FR"],
+    age: int,
+) -> _TextTasks:
     """Runs GPT to get text tasks.
 
     Args:
         word: The word to get text tasks for.
         language: The language to use.
+        age: The age of the target audience.
 
     Returns:
         The text tasks.
     """
     logger.debug("Running GPT.")
-    gpt = openai_api.ChatCompletion(api_key=OPENAI_API_KEY)
+    gpt = openai_api.ChatCompletion(api_key=OPENAI_API_KEY.get_secret_value())
     prompts = _Prompts.load()
     if prompts.system is None:
         raise fastapi.HTTPException(
@@ -141,8 +152,14 @@ async def _get_text_tasks(word: str, language: Literal["en", "nl", "fr"]) -> _Te
             detail="System prompts not loaded.",
         )
 
+    localized_prompts = prompts.system[language]
+    age_prompts = {
+        name: prompt.replace("{{AGE}}", str(age))
+        for name, prompt in localized_prompts.items()
+    }
+
     gpt_calls = {
-        name: gpt.run(user_prompt=word, system_prompt=prompts.system[language][name])
+        name: gpt.run(user_prompt=word, system_prompt=age_prompts[name])
         for name in _TextTasks._fields
     }
 
@@ -159,7 +176,7 @@ async def _get_listening_task(word: str) -> bytes:
     Returns:
         The audio bytes and the S3 key.
     """
-    tts = openai_api.TextToSpeech(api_key=OPENAI_API_KEY)
+    tts = openai_api.TextToSpeech(api_key=OPENAI_API_KEY.get_secret_value())
     return await tts.run(word, voice=OPENAI_VOICE.value)
 
 
@@ -172,22 +189,22 @@ class _Prompts(pydantic.BaseModel):
     user: dict[str, dict[str, str]] | None
 
     @classmethod
-    def load(cls, path: pathlib.Path = PROMPT_FILE) -> "_Prompts":
+    def load(cls, prompt_path: pathlib.Path = PROMPT_FILE) -> "_Prompts":
         """Loads prompts from a YAML file.
 
         Args:
-            path: The path to the YAML file.
+            prompt_path: The path to the YAML file.
 
         Returns:
             The prompts.
         """
-        with path.open("r", encoding="utf-8") as prompt_file:
+        with prompt_path.open("r", encoding="utf-8") as prompt_file:
             prompts = yaml.safe_load(prompt_file)
 
         return cls(**prompts)
 
 
-def _read_words(language: Literal["en", "nl", "fr"]) -> list[str]:
+def _read_words(language: Literal["en-US", "nl-NL", "fr-FR"]) -> list[str]:
     """Reads the words from the dictionary file."""
     dictionary_file = (
         pathlib.Path(__file__).parent.parent.parent
