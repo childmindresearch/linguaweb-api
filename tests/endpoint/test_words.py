@@ -26,6 +26,7 @@ def word(session: orm.Session) -> models.Word:
         antonyms=["The", "antonym", "is", "the", "word."],
         jeopardy="The jeopardy is the word.",
         language="en",
+        age=6,
         s3_file=s3,
     )
     session.add(audio)
