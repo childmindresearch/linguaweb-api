@@ -26,6 +26,7 @@ class Endpoints(str, enum.Enum):
     POST_SPEECH_TRANSCRIBE = f"{API_ROOT}/speech/transcribe"
 
     GET_HEALTH = f"{API_ROOT}/health"
+    GET_CONNECTIVITY = f"{API_ROOT}/health/connectivity"
 
 
 @pytest.fixture()
