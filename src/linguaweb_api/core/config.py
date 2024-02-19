@@ -73,6 +73,11 @@ class Settings(pydantic_settings.BaseSettings):  # type: ignore[valid-type, misc
         json_schema_extra={"env": "LOGGER_VERBOSITY"},
     )
 
+    API_KEY: pydantic.SecretStr = pydantic.Field(
+        ...,
+        json_schema_extra={"env": "API_KEY"},
+    )
+
     ENVIRONMENT: str = pydantic.Field(
         "development",
         json_schema_extra={"env": "ENVIRONMENT"},
