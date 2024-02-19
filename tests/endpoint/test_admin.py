@@ -37,12 +37,26 @@ def _mock_services(mocker: pytest_mock.MockerFixture) -> Generator[None, None, N
         yield
 
 
+def test_add_word_no_auth(
+    client: testclient.TestClient,
+    endpoints: conftest.Endpoints,
+) -> None:
+    """Tests the add word endpoint without authentication."""
+    response = client.post(endpoints.POST_ADD_WORD, data={"word": "test_word"})
+
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
 def test_add_word(
     client: testclient.TestClient,
     endpoints: conftest.Endpoints,
 ) -> None:
     """Tests the add word endpoint."""
-    response = client.post(endpoints.POST_ADD_WORD, data={"word": "test_word"})
+    response = client.post(
+        endpoints.POST_ADD_WORD,
+        data={"word": "test_word"},
+        headers={"x-api-key": "test"},
+    )
     expected_keys = {
         "id",
         "synonyms",
@@ -62,7 +76,11 @@ def test_add_word_already_exists(
     endpoints: conftest.Endpoints,
 ) -> None:
     """Tests the add word endpoint when the word already exists."""
-    client.post(endpoints.POST_ADD_WORD, data={"word": "test_word"})
+    client.post(
+        endpoints.POST_ADD_WORD,
+        data={"word": "test_word"},
+        headers={"x-api-key": "test"},
+    )
     expected_keys = {
         "id",
         "synonyms",
@@ -73,10 +91,24 @@ def test_add_word_already_exists(
         "language",
     }
 
-    response = client.post(endpoints.POST_ADD_WORD, data={"word": "test_word"})
+    response = client.post(
+        endpoints.POST_ADD_WORD,
+        data={"word": "test_word"},
+        headers={"x-api-key": "test"},
+    )
 
     assert response.status_code == status.HTTP_201_CREATED
     assert set(response.json().keys()) == expected_keys
+
+
+def test_add_preset_words_no_auth(
+    client: testclient.TestClient,
+    endpoints: conftest.Endpoints,
+) -> None:
+    """Tests the add preset words endpoint without authentication."""
+    response = client.post(endpoints.POST_ADD_PRESET_WORDS)
+
+    assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
 def test_add_preset_words(
@@ -99,6 +131,7 @@ def test_add_preset_words(
     response = client.post(
         endpoints.POST_ADD_PRESET_WORDS,
         data={"max_words": str(max_words)},
+        headers={"x-api-key": "test"},
     )
 
     assert response.status_code == status.HTTP_201_CREATED

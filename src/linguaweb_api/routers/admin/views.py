@@ -5,7 +5,7 @@ import fastapi
 from fastapi import status
 from sqlalchemy import orm
 
-from linguaweb_api.core import config, models
+from linguaweb_api.core import config, models, security
 from linguaweb_api.microservices import s3, sql
 from linguaweb_api.routers.admin import controller, schemas
 
@@ -14,7 +14,11 @@ LOGGER_NAME = settings.LOGGER_NAME
 
 logger = logging.getLogger(LOGGER_NAME)
 
-router = fastapi.APIRouter(prefix="/admin", tags=["admin"])
+router = fastapi.APIRouter(
+    prefix="/admin",
+    tags=["admin"],
+    dependencies=[fastapi.Depends(security.check_api_key)],
+)
 
 
 @router.post(

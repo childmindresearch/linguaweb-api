@@ -10,6 +10,7 @@ env:
   LWAPI_OPENAI_API_KEY: fake_key
   LWAPI_S3_ACCESS_KEY: fake_key
   LWAPI_S3_SECRET_KEY: fake_key
+  LWAPI_API_KEY: test
 
 jobs:
   tests:
