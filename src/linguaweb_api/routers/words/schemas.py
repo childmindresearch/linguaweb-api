@@ -1,4 +1,5 @@
 """Schemas for the Words router."""
+
 import pydantic
 
 

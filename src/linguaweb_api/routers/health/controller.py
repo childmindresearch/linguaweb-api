@@ -1,4 +1,5 @@
 """Controller to assess the health of the services."""
+
 import fastapi
 import requests
 from fastapi import status
