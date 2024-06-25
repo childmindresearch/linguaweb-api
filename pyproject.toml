@@ -39,7 +39,7 @@ types-pyyaml = "^6.0.12.12"
 types-requests = "^2.31.0.20240125"
 
 [tool.poetry.group.docs.dependencies]
-pdoc = "^14.4.0"
+pdoc = "^14.5.1"
 
 [tool.poetry.extras]
 docs = ["pdoc"]
