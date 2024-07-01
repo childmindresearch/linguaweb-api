@@ -1,4 +1,5 @@
 """Controller for the listening router."""
+
 import asyncio
 import logging
 import pathlib

@@ -1,4 +1,5 @@
 """Settings for the API."""
+
 import enum
 import functools
 import logging

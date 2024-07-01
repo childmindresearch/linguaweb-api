@@ -1,4 +1,5 @@
 """Tests for the health endpoints."""
+
 from fastapi import status, testclient
 
 from tests.endpoint import conftest

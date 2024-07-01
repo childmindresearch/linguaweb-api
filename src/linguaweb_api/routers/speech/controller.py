@@ -1,4 +1,5 @@
 """Speech router controller."""
+
 import logging
 import pathlib
 import tempfile
