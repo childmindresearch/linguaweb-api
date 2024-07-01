@@ -1,4 +1,5 @@
 """Interactions with an S3/MinIO bucket."""
+
 import logging
 
 import boto3

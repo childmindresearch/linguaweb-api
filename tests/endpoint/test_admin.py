@@ -1,4 +1,5 @@
 """Tests for the admin endpoints."""
+
 import pathlib
 from collections.abc import Generator
 

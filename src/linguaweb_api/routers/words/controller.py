@@ -1,4 +1,5 @@
 """Business logic for the text router."""
+
 import logging
 
 import fastapi
