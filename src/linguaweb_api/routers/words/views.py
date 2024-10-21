@@ -1,4 +1,5 @@
 """View definitions for the text router."""
+
 import logging
 
 import fastapi

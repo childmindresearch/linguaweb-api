@@ -1,4 +1,5 @@
 """Tests for the words endpoints."""
+
 import moto
 import pytest
 import pytest_mock
