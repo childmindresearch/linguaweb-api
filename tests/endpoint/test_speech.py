@@ -1,4 +1,5 @@
 """Tests for the speech endpoints."""
+
 import array
 import tempfile
 import wave

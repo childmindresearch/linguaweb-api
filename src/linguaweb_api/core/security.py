@@ -1,4 +1,5 @@
 """Security module for the CTK API."""
+
 import fastapi
 from fastapi import security, status
 
