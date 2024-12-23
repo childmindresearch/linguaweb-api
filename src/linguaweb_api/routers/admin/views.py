@@ -1,4 +1,5 @@
 """Admin views."""
+
 import logging
 
 import fastapi

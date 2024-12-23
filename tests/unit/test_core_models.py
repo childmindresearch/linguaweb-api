@@ -1,4 +1,5 @@
 """Tests for the BaseTable settings of SQL tables."""
+
 import datetime
 import time
 
