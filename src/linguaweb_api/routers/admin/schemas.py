@@ -1,4 +1,5 @@
 """Schemas for the admin API."""
+
 import pydantic
 
 

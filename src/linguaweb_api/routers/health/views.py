@@ -1,4 +1,5 @@
 """View definitions for the health router."""
+
 import logging
 
 import fastapi

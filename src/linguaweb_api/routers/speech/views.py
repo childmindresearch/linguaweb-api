@@ -1,4 +1,5 @@
 """View definitions for the speech router."""
+
 import logging
 
 import fastapi

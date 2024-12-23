@@ -1,4 +1,5 @@
 """Entrypoint for the API."""
+
 import logging
 
 import fastapi
